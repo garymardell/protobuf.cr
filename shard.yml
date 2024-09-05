@@ -18,3 +18,7 @@ targets:
 crystal: 1.0.0
 
 license: MIT
+
+development_dependencies:
+  perf_tools:
+    github: crystal-lang/perf-tools
