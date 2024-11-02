@@ -8,7 +8,7 @@ describe Protobuf::Message do
       it "acts as #key" do
         File.open("#{__DIR__}/../fixtures/test.data.encoded") do |io|
           test = Test.from_protobuf(io)
-          test["f1"].should eq("dsfadsafsaf")
+          test["f1"].should eq("dsfadsafsaf".to_slice)
         end
       end
     end

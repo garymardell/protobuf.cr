@@ -17,8 +17,8 @@ module Protobuf
     :double   => Float64,
 
     # wire type 2
-    :string => String,
-    :bytes  => Slice(UInt8),
+    :string => Bytes,
+    :bytes  => Bytes,
 
     # wire type 5
     :fixed32  => UInt32,

@@ -34,7 +34,7 @@ describe "Protobuf::Message" do
   it "V3 repeated non-scalar" do
     msg = TestMessagesV3::Test3.new
 
-    pair1 = TestMessagesV3::Pair.new "key1", "val1"
+    pair1 = TestMessagesV3::Pair.new "key1".to_slice, "val1".to_slice
     msg.pairs = [] of TestMessagesV3::Pair
     msg.pairs.not_nil!.push pair1
 
@@ -46,8 +46,8 @@ describe "Protobuf::Message" do
     msg2 = TestMessagesV3::Test3.from_protobuf some_io
     pairs = msg2.pairs.not_nil!
     pairs.size.should eq 1
-    pairs[0].key.should eq "key1"
-    pairs[0].value.should eq "val1"
+    pairs[0].key.should eq "key1".to_slice
+    pairs[0].value.should eq "val1".to_slice
   end
 
 end

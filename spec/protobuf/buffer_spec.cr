@@ -7,7 +7,7 @@ describe Protobuf::Buffer do
 
       # f1: "dsfadsafsaf"
       buf.read_info.should eq({1, 2})
-      buf.read_string.should eq("dsfadsafsaf")
+      buf.read_string.should eq("dsfadsafsaf".to_slice)
 
       # f2: 234
       buf.read_info.should eq({2, 0})
@@ -69,10 +69,10 @@ describe Protobuf::Buffer do
       buf.read_uint64 # read length
 
       buf.read_info.should eq({1, 2})
-      buf.read_string.should eq("sdfff")
+      buf.read_string.should eq("sdfff".to_slice)
 
       buf.read_info.should eq({2, 2})
-      buf.read_string.should eq("q\"qq\\q\n")
+      buf.read_string.should eq("q\"qq\\q\n".to_slice)
 
       # pairs {
       #   key: "   sdfff2  \321\202\320\265\321\201\321\202 "
@@ -81,10 +81,10 @@ describe Protobuf::Buffer do
       buf.read_info.should eq({6, 2})
       buf.read_uint64 # read length
       buf.read_info.should eq({1, 2})
-      buf.read_string.should eq("   sdfff2  тест ")
+      buf.read_string.should eq("   sdfff2  тест ".to_slice)
 
       buf.read_info.should eq({2, 2})
-      buf.read_string.should eq("q\tqq<>q2&\u{1}")
+      buf.read_string.should eq("q\tqq<>q2&\u{1}".to_slice)
 
       # bbbb: "\000\001\002\377\376\375"
       buf.read_info.should eq({7, 2})
@@ -135,17 +135,17 @@ describe Protobuf::Buffer do
 
       # ss: "foo"
       buf.read_info.should eq({22, 2})
-      buf.read_string.should eq("foo")
+      buf.read_string.should eq("foo".to_slice)
       # ss: "bar"
       buf.read_info.should eq({22, 2})
-      buf.read_string.should eq("bar")
+      buf.read_string.should eq("bar".to_slice)
 
       # bb: "foo"
       buf.read_info.should eq({23, 2})
-      buf.read_string.should eq("foo")
+      buf.read_string.should eq("foo".to_slice)
       # bb: "bar"
       buf.read_info.should eq({23, 2})
-      buf.read_string.should eq("bar")
+      buf.read_string.should eq("bar".to_slice)
 
       # [gtt]: true
       buf.read_info.should eq({100, 0})

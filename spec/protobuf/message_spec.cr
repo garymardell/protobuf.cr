@@ -8,7 +8,7 @@ describe Protobuf::Message do
       File.open("#{__DIR__}/../fixtures/test.data.encoded") do |io|
         test = Test.from_protobuf(io)
 
-        test.f1.should eq("dsfadsafsaf")
+        test.f1.should eq("dsfadsafsaf".to_slice)
         test.f2.should eq(234)
 
         test.fa.should eq([2342134, 2342135, 2342136])
@@ -18,8 +18,8 @@ describe Protobuf::Message do
         test.fc.should eq [4, 7, -12, 4, 7, -3, 4, 7, 0]
 
         test.pairs.should eq([
-          Pair.new(key: "sdfff", value: "q\"qq\\q\n"),
-          Pair.new(key: "   sdfff2  тест ", value: "q\tqq<>q2&\u{1}"),
+          Pair.new(key: "sdfff".to_slice, value: "q\"qq\\q\n".to_slice),
+          Pair.new(key: "   sdfff2  тест ".to_slice, value: "q\tqq<>q2&\u{1}".to_slice),
         ])
 
         test.bbbb.should eq(Slice[0u8, 1u8, 2u8, 255u8, 254u8, 253u8])
@@ -45,7 +45,7 @@ describe Protobuf::Message do
         test.gtt.should eq true
         test.gtg.should eq 20.0855369
 
-        test.ss.should eq ["foo", "bar"]
+        test.ss.should eq ["foo".to_slice, "bar".to_slice]
         test.bb.should eq ["foo".to_slice, "bar".to_slice]
       end
     end
@@ -70,7 +70,7 @@ describe Protobuf::Message do
       File.open("#{__DIR__}/../fixtures/test.data.proto3-encoded") do |io|
         test = TestMessagesV3::Test3.from_protobuf(io)
 
-        test.f1.should eq("dsfadsafsaf")
+        test.f1.should eq("dsfadsafsaf".to_slice)
         test.f2.should eq(234)
 
         test.fa.should eq([2342134, 2342135, 2342136])
@@ -80,8 +80,8 @@ describe Protobuf::Message do
         test.fc.should eq [4, 7, -12, 4, 7, -3, 4, 7, 0]
 
         test.pairs.should eq([
-          TestMessagesV3::Pair.new(key: "sdfff", value: "q\"qq\\q\n"),
-          TestMessagesV3::Pair.new(key: "   sdfff2  тест ", value: "q\tqq<>q2&\u{1}"),
+          TestMessagesV3::Pair.new(key: "sdfff".to_slice, value: "q\"qq\\q\n".to_slice),
+          TestMessagesV3::Pair.new(key: "   sdfff2  тест ".to_slice, value: "q\tqq<>q2&\u{1}".to_slice),
         ])
 
         test.bbbb.should eq(Slice[0u8, 1u8, 2u8, 255u8, 254u8, 253u8])
@@ -108,7 +108,7 @@ describe Protobuf::Message do
         test.gtt.should eq true
         test.gtg.should eq 20.0855369
 
-        test.ss.should eq ["foo", "bar"]
+        test.ss.should eq ["foo".to_slice, "bar".to_slice]
         test.bb.should eq ["foo".to_slice, "bar".to_slice]
       end
     end

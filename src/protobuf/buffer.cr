@@ -7,7 +7,7 @@ module Protobuf
       case wire
       when 0 then read_uint64
       when 1 then read_fixed64
-      when 2 then read_string
+      when 2 then read_bytes
       when 5 then read_fixed32
       end
     end
@@ -39,19 +39,13 @@ module Protobuf
     end
 
     def read(n : Int32)
-      slice = Slice(UInt8).new(n)
+      slice = Bytes.new(n)
       @io.read_fully(slice)
       slice
     end
 
     def read_string
-      n = read_int32
-      return nil if n.nil?
-
-      String.new(n) do |buffer|
-        @io.read_fully(Slice.new(buffer, n))
-        {n, 0}
-      end
+      read_bytes
     end
 
     def read_fixed32
@@ -157,6 +151,10 @@ module Protobuf
       write_bytes(str.encode("UTF-8"))
     end
 
+    def write_string(str : Bytes)
+      write_bytes(str)
+    end
+
     def write_fixed32(n : UInt32)
       @io.write_bytes(n, IO::ByteFormat::LittleEndian)
     end
@@ -202,7 +200,7 @@ module Protobuf
       @io.write_byte b ? 1_u8 : 0_u8
     end
 
-    def write_bytes(bytes : Slice(UInt8))
+    def write_bytes(bytes : Bytes)
       write_uint64(bytes.bytesize.to_u64!)
       @io.write(bytes)
     end
@@ -255,7 +253,7 @@ module Protobuf
       when {Float32, :float}; write_float(value)
       when {Float64, :double}; write_double(value)
 
-      when {Slice(UInt8), :bytes}; write_bytes(value)
+      when {Bytes, :bytes}; write_bytes(value)
       when {String, :string}; write_string(value)
 
       when {Bool, :bool}; write_bool(value)

@@ -23,7 +23,7 @@ describe "Protobuf::Message" do
 
   it "V3 encodes length-encoded string Test2" do
     msg = TestMessagesProto3::Test2.new
-    msg.b = "testing"
+    msg.b = "testing".to_slice
     str = msg_to_protobuf_hexstring msg
     str.should eq "120774657374696e67"
   end
@@ -42,7 +42,7 @@ describe "Protobuf::Message" do
 
     # repeated non-scalar should not be packed
 
-    pair1 = TestMessagesV3::Pair.new "key1", "val1"
+    pair1 = TestMessagesV3::Pair.new "key1".to_slice, "val1".to_slice
     msg.pairs = [] of TestMessagesV3::Pair
     msg.pairs.not_nil!.push pair1
 
@@ -69,7 +69,7 @@ describe "Protobuf::Message V2" do
   end
 
   it "encodes length-encoded string Test2" do
-    msg = TestMessagesProto2::Test2.new "testing"
+    msg = TestMessagesProto2::Test2.new "testing".to_slice
     str = msg_to_protobuf_hexstring msg
     str.should eq "120774657374696e67"
   end
