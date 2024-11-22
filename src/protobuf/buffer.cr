@@ -3,6 +3,8 @@ module Protobuf
     def initialize(@io : IO)
     end
 
+    delegate pos, to: @io
+
     def skip(wire)
       case wire
       when 0 then read_uint64

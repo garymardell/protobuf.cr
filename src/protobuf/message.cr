@@ -70,9 +70,11 @@ module Protobuf
             {% if field[:repeated] %}\
               %var{tag} ||= [] of {{field[:crystal_type]}}
               {% if (pbVer != "proto2" && pb_type && ![String, Slice(UInt8)].includes?(pb_type.resolve)) || field[:packed] %}
-                packed_buf_{{tag}} = buf.new_from_length.not_nil!
-                loop do
-                  %packed_var{tag} = {{(!!pb_type ? "packed_buf_#{tag}.read_#{field[:pb_type].id}" : "#{field[:crystal_type]}.new(packed_buf_#{tag})").id}}
+                length = buf.read_int32.not_nil!
+                end_position = buf.pos + length
+
+                while buf.pos < end_position
+                  %packed_var{tag} = {{(!!pb_type ? "buf.read_#{field[:pb_type].id}" : "#{field[:crystal_type]}.new(buf)").id}}
                   break if %packed_var{tag}.nil?
                   %var{tag} << %packed_var{tag}
                 end
